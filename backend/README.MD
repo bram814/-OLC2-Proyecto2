@@ -3,49 +3,44 @@
 _Pasos par subir una Api basado en Flask a Heroku._
 _________________________
 
-#### Instalacion de un entorno virtual
+#### Instalamos el Requerimiento:
 
 ```bash 
-pip install virtualenv
+pip install gunicorn
 ```
+#### Instalamos el Entorno Virtual:
 
 ```bash
-python3 -m venv venv
+pip install pipenv
 ```
 
 ----
 
+#### Instalar todas las librerías a utilizar en el entorno virtual
+```bash
+pipenv install flask gunicorn flask_cors 
+```
 #### Ingresar al entorno virtual
 ```bash
-abraham@jash-linux:~/backend$ ls
-app.py  Readme.md  static  templates  venv
-```
-
-```bash
-abraham@jash-linux:~/backend$ source venv/bin/activate
+pipenv shell
 ```
 Si se ejecuto correctamente de debe de aparecer esta forma
 
 ```bash
-(venv) abraham@jash-linux:~/backend$ 
+(backend-FXpoKE6S) abraham@jash-linux:~/backend$ 
 ```
 
 ------------
 
-#### Instalar todas las librerías a utilizar
 
-```bash
-    pip install flask
-    pip install gunicorn
-    pip install Flask-Cors
-    pip install Flask-WTF
-```
 #### Se crea un archivo con las librería.
 
 ```bash
-(venv) abraham@jash-linux:~/backend$ pip freeze > requirements.txt 
+pip freeze > requirements.txt 
 ```
 #### Crear un archivo con el siguiente Nombre:
+En el nombre_app debe de ir el nombre de la aplicacion en este caso, se llama app.
+El Procfile debe de ir de la siguiente manera:
 ```bash
 Procfile
 ```
@@ -53,12 +48,15 @@ Debe de contener
 ```bash
 web: gunicorn nombre_app:app
 ```
-En el nombre_app debe de ir el nombre de la aplicacion en este caso, se llama app.
-El Procfile debe de ir de la siguiente manera:
 ```bash
 web: gunicorn app:app
 ```
+______
 
+Nota: Si al subir se genera un error el archivo de que no esta actualizado el archivo pickfile.lock ingresamos el siguiente comando.
+```bash
+pipenv lock
+```
 ______
 
 ## Subiendo Proyecto a Heroku. 
@@ -66,6 +64,10 @@ ______
 
 <!-- <font color="white">(venv)</font><font color="gren"> abraham@jash-linux</font><font color="white">:</font><font color="blue">~/backend</font><font color="white">$ heroku login</font> -->
 
+Se inicializa el proyecto para heroku.
+```bash
+git init
+```
 
 ```bash
 (venv) abraham@jash-linux:~/backend$ heroku login 
@@ -83,10 +85,7 @@ set git remote heroku to https://git.heroku.com/nameless-dusk-97106.git
 (venv) abraham@jash-linux:~/backend$ git add -A
 ```
 ```bash
-(venv) abraham@jash-linux:~/backend$ git commit -m "[ADD] Heroku"
-```
-```bash
-(venv) abraham@jash-linux:~/backend$ git push
+(venv) abraham@jash-linux:~/backend$ git commit -am "[ADD] Heroku"
 ```
 ```bash
 (venv) abraham@jash-linux:~/backend$ git push heroku master
