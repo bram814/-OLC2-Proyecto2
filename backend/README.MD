@@ -6,7 +6,7 @@ _________________________
 #### Instalacion de un entorno virtual
 
 ```bash 
-sudo apt-get install python-virtualenv
+pip install virtualenv
 ```
 
 ```bash
