@@ -14,7 +14,7 @@ def index():
 
 @app.route(f'{route}/p', methods=['GET'])
 def home():
-    return "UPDATE HOME"
+    return "HOME"
 
 if __name__ == "__main__":
     app.run('0.0.0.0', 5000, debug=True)
