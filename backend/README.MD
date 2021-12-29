@@ -1,6 +1,7 @@
 # Heroku en Linux-Ubuntu
 
 _Pasos par subir una Api basado en Flask a Heroku._
+[Flask to Heroku](https://healthy-fighter-9a0.notion.site/Deployment-fc7d2a20b314438fb1d37e06a3151f45)
 _________________________
 
 #### Instalamos el Requerimiento:
@@ -92,3 +93,7 @@ set git remote heroku to https://git.heroku.com/nameless-dusk-97106.git
 
 ```
 
+----------------------
+`python -m pip install -U pip`
+
+`python -m pip install -U matplotlib`
