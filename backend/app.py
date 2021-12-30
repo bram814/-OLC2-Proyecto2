@@ -6,9 +6,9 @@ from src.Convert import csvToJson
 app = Flask(__name__)
 CORS(app)
 
-route = '/api'
+# route = '/api'
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def index():
     return render_template('index.html')
 
