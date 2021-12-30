@@ -1,4 +1,5 @@
 import React from "react";
+import Interfaz from "./components/Pagina/Interfaz";
 import "./styles.css";
 
 // import { Line } from "react-chartjs-2";
@@ -25,12 +26,15 @@ import BarChart from "./components/BarChart";
 
 export default function App() {
   return (
-    <div className="App">
-      <BarChart 
-        value={[12, 19, 3, 5, 2, 3]} 
-        labels={['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
-        title={"hola"}
-      />
+    <div>
+      <Interfaz />
     </div>
+    // <div className="App">
+    //   <BarChart 
+    //     value={[12, 19, 3, 5, 2, 3]} 
+    //     labels={['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange']}
+    //     title={"hola"}
+    //   />
+    // </div>
   );
 }

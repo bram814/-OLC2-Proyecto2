@@ -1,6 +1,27 @@
+
 function Navbar(props){
 
+    function handleFileChange(e){
+        var data = new FormData()
+        try{
+            
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.readAsText(file);
+            reader.onload = () => {
+                props.fileName(file.name);
+                props.fileContent(reader.result);
+                data.append("data", e.target.files[0]);
+                console.log(data)
+            }
+        }catch(error){
+            alert(error);
 
+        }
+		
+	}
+
+    
     return(
         <>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -28,18 +49,15 @@ function Navbar(props){
                         </li>
                         <li className="nav-item dropdown">
                         <a className="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                        <div className="dropdown-menu">
-                            <a className="dropdown-item" href="#">Action</a>
-                            <a className="dropdown-item" href="#">Another action</a>
-                            <a className="dropdown-item" href="#">Something else here</a>
-                            <div className="dropdown-divider"></div>
-                            <a className="dropdown-item" href="#">Separated link</a>
-                        </div>
+                        
                         </li>
                     </ul>
                     <form className="d-flex">
-                        <input className="form-control me-sm-2" type="text" placeholder="Search"/>
-                        <button className="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                        <input 
+                            className="form-control me-sm-2" 
+                            type="file"
+                            accept=".csv,.xlsx,.xls, .json"
+                            onChange={handleFileChange} />
                     </form>
                     </div>
                 </div>
