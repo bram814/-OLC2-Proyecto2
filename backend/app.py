@@ -13,11 +13,8 @@ def index():
     return render_template('index.html')
 
 
-@app.route(f'{route}/p', methods=['GET'])
-def home():
-    return "HOME"
 
-@app.route(f'/cargar', methods=['GET', 'POST'])
+@app.route(f'/cargar', methods=['POST'])
 def prueba():
     print("----------")
     if request.method == 'POST':
