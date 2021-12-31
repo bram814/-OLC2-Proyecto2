@@ -97,3 +97,11 @@ set git remote heroku to https://git.heroku.com/nameless-dusk-97106.git
 `python -m pip install -U pip`
 
 `python -m pip install -U matplotlib`
+
+
+--------------------------
+OTROS COMANDOS
+
+`pip install -U scikit-learn`
+
+`pip install pandas`

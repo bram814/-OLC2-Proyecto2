@@ -8,7 +8,7 @@ CORS(app)
 
 # route = '/api'
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -35,4 +35,4 @@ def prueba():
         ), 200
 
 if __name__ == "__main__":
-    app.run('0.0.0.0', 5000, debug=True)
+    app.run(debug=True)
