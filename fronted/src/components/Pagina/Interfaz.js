@@ -18,6 +18,8 @@ function Interfaz(props){
     const [label1, setLabel1] = useState('');
     const [label2, setLabel2] = useState('');
     const [label3, setLabel3] = useState('');
+    const [label4, setLabel4] = useState(1);
+    const [label5, setLabel5] = useState('');
 
     // Parametrizar
     const [parametrizar, setParametrizar] = useState('');
@@ -40,22 +42,26 @@ function Interfaz(props){
                 // console.log(`1- ${label1}, EC1: ${label2} - EC2: ${label3}`)
                 // console.log(fileContent)
                 // console.log(fileExtension)
-                console.log("a")
-                var query = await Reporte1(label1, label2, label3, fileContent, fileExtension);
-                
-                var result = await query.json();
+                if(label4>=1){
+                    var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4);
+                    
+                    var result = await query.json();
 
-                if(query.status == 200){
-                    console.log(result)
-                    setDispers(result.dispers);
-                    setPolyneal(result.poly);
-                    setR2(result.r2);
-                    setRmse(result.rmse);
-                    setLabels(result.label);
+                    if(query.status == 200){
+                        console.log(result)
+                        setDispers(result.dispers);
+                        setPolyneal(result.poly);
+                        setR2(result.r2);
+                        setRmse(result.rmse);
+                        setLabels(result.label);
 
-                }else {
-                    alert('Error')
+                    }else {
+                        alert('Error')
+                    }
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
                 }
+                
 
                 
             }else{
@@ -71,6 +77,8 @@ function Interfaz(props){
     function handleInputChange1(e){ setLabel1(e.target.value); }
     function handleInputChange2(e){ setLabel2(e.target.value); }
     function handleInputChange3(e){ setLabel3(e.target.value); }
+    function handleInputChange4(e){ setLabel4(e.target.value); }
+    function handleInputChange5(e){ setLabel5(e.target.value); }
 
     return(
 
@@ -94,7 +102,9 @@ function Interfaz(props){
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Pais" value={label1} onChange={handleInputChange1} /> 
                     </div>
-                   
+                    <div>
+                        <input className="etiqueta1" type="text" placeholder="Grado" value={label4} onChange={handleInputChange4} /> 
+                    </div>
                     <div>
                         <select className="form-option-1" value={label2} onChange={handleInputChange2}>
                             <option className="form-option">Seleccione el Primer Encabezado</option>
@@ -119,6 +129,14 @@ function Interfaz(props){
                                     )
                                 })
                             }
+                        </select>
+                    </div>
+                    <div>
+                        <select className="form-option-1" value={label5} onChange={handleInputChange5}>
+                            <option className="form-option">Encabezado Tiempo</option> 
+                            <option className="form-option" value={1} key={1}>Si</option>
+                            <option className="form-option" value={0} key={0}>No</option>
+                                 
                         </select>
                     </div>
                     <div>

@@ -36,14 +36,12 @@ def Reporte1(body):
     # print(f'List: {features}')
     # data = pd.DataFrame(features) # Convierte la tupla a dataFrame.
     
-    if(filtro):
-        print(filtro)
+    
     #     X = np.asarray(df[label2]=='Guatemala')
     # else:
     X = np.asarray(df[label2])
     Y = np.asarray(df[label3]).reshape(-1,1)
-    print(X)
-    print(len(X))
+    
     i = 0
     while(i<len(X)):
         # temp.append(i+1)
@@ -53,6 +51,7 @@ def Reporte1(body):
     X_TEMP = X
     i = 0
     while(i<len(X_TEMP)):
+
         labels.append(X_TEMP[i])
         poly.append({
             "x":X_TEMP[i],
@@ -64,7 +63,7 @@ def Reporte1(body):
     #___________________________________________________________________________________________
     # Step 2: data preparation.
         
-    nb_degree = 3 # Grado
+    nb_degree = int(body['degree']) # Grado
     polyneal_feature = PolynomialFeatures(degree=nb_degree)
     X = polyneal_feature.fit_transform(X)
     Y = polyneal_feature.fit_transform(Y)

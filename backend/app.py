@@ -50,7 +50,7 @@ def reporte1():
         body = request.get_json()
         # print(body)
         result = Reporte1(body)
-        # print(result)
+        print(result)
         return jsonify(
             isError = False,
             message = "Success",
