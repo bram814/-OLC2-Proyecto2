@@ -16,15 +16,21 @@ export async function Content(content){ // verificar usuario
     });
 }
 
+export async function Reporte1(label1, label2, label3, content, extension){
 
-export async function Content2(content){ // verificar usuario
-
-    return fetch(ROUTE_LOCAL+'cargar', {
-        method: "POST",
+    return fetch(ROUTE_LOCAL + 'reporte1', {
+        method: 'POST',
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: content
-    });
+        body: JSON.stringify({
+            label1: label1,
+            label2: label2,
+            label3: label3,
+            content: content,
+            extension: extension
+        }),
+    })
+
 }

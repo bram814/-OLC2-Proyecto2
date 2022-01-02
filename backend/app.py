@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from src.Convert import csvToJson
+from src.Reportes import *
 
 
 app = Flask(__name__)
 CORS(app)
 
+data = None;
 # route = '/api'
 
 @app.route('/')
@@ -21,18 +23,50 @@ def prueba():
         contenido = request.get_json()['content']
         # print(contenido)
         data = csvToJson(contenido)
-        print(data[0]) #obtiene la data
-        print(data[1]) #obtiene los headers
+        content = data[0]
+        header = data[1]
+        # print(data[0]) #obtiene la data
+        # print(data[1]) #obtiene los headers
+
+        return jsonify(
+            isError= False,
+            message= "Success",
+            statusCode= 200,
+            content = content,
+            header = header
+            ), 200
         
-    else:
-        print("hola")
-        # print(request)
 
     return jsonify(
         isError= False,
         message= "Success",
-        statusCode= 200,
+        statusCode= 402,
+        ), 402
+
+@app.route(f'/reporte1', methods=['POST'])
+def reporte1():
+
+    if(request.method == 'POST'):
+        body = request.get_json()
+        # print(body)
+        result = Reporte1(body)
+        # print(result)
+        return jsonify(
+            isError = False,
+            message = "Success",
+            statusCode = 200,
+            poly = result[0],
+            dispers = result[1],
+            rmse = result[2],
+            r2 = result[3],
+            label = result[4]
+        ), 200
+
+    return jsonify(
+        isError= False,
+        message= "Success",
+        statusCode = 200,
         ), 200
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host= '0.0.0.0', port=5000, debug=True)

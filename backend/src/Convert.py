@@ -21,6 +21,10 @@ def csvToJson(csv): # si es un csv lo convierte a json
             
             while(z<len(currentLine)):
                 if(header[i] == header[z]): # si es el mismo encabezado lo guarda en un array temporal.
+                    if(currentLine[z]==''):
+                        currentLine[z] = '0'
+                    
+
                     obj.append(currentLine[z])
                     
                 z += 1
@@ -31,5 +35,5 @@ def csvToJson(csv): # si es un csv lo convierte a json
         i += 1
 
 
-    data = pd.DataFrame(result) # se convierte.
-    return data, header
+    # data = pd.DataFrame(result) # se convierte.
+    return result, header
