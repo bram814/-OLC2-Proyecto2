@@ -20,6 +20,8 @@ function Interfaz(props){
     const [label3, setLabel3] = useState('');
     const [label4, setLabel4] = useState(1);
     const [label5, setLabel5] = useState('');
+    const [label6, setLabel6] = useState('');
+
 
     // Parametrizar
     const [parametrizar, setParametrizar] = useState('');
@@ -43,7 +45,7 @@ function Interfaz(props){
                 // console.log(fileContent)
                 // console.log(fileExtension)
                 if(label4>=1){
-                    var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4);
+                    var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6);
                     
                     var result = await query.json();
 
@@ -79,6 +81,7 @@ function Interfaz(props){
     function handleInputChange3(e){ setLabel3(e.target.value); }
     function handleInputChange4(e){ setLabel4(e.target.value); }
     function handleInputChange5(e){ setLabel5(e.target.value); }
+    function handleInputChange6(e){ setLabel6(e.target.value); }
 
     return(
 
@@ -100,14 +103,27 @@ function Interfaz(props){
                         <label className="form-label">PARAMETRIZAR DATOS </label>
                     </div>
                     <div>
-                        <input className="etiqueta1" type="text" placeholder="Pais" value={label1} onChange={handleInputChange1} /> 
+                        <input className="etiqueta1" type="text" placeholder="Filtro" value={label1} onChange={handleInputChange1} /> 
                     </div>
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Grado" value={label4} onChange={handleInputChange4} /> 
                     </div>
                     <div>
+                        <select className="form-option-1" value={label6} onChange={handleInputChange6}>
+                            <option className="form-option">Encabezado del Filtro</option>
+                            {
+                                
+                                header.map(i=>{
+                                    return(
+                                        <option className="form-option" value={i.value} key={i.key}>{i.value}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div>
                         <select className="form-option-1" value={label2} onChange={handleInputChange2}>
-                            <option className="form-option">Seleccione el Primer Encabezado</option>
+                            <option className="form-option">Seleccione el 1° Encabezado</option>
                             {
                                 
                                 header.map(i=>{
@@ -120,7 +136,7 @@ function Interfaz(props){
                     </div>
                     <div>
                         <select className="form-option-1" value={label3} onChange={handleInputChange3}>
-                            <option className="form-option">Seleccione el Segundo Encabezado 2</option>
+                            <option className="form-option">Seleccione el 2° Encabezado</option>
                             {
                                 
                                 header.map(i=>{

@@ -18,7 +18,8 @@ def Reporte1(body):
     
     label1 = body['label1'] # label1  -> filtro
     label2 = body['label2'] # label2  -> encabezado 1
-    label3 = body['label3']  # label3  -> encabezado 2
+    label3 = body['label3'] # label3  -> encabezado 2
+    filter = body['filter'] # label5  -> encabezado de Filtro
     content = body['content'] # content -> contenido
     
     filtro = False
@@ -27,7 +28,6 @@ def Reporte1(body):
 
     df = pd.DataFrame(content)
     
-
     # le = preprocessing.LabelEncoder()
     # x1_encoded = le.fit_transform(df[label2].to_numpy()) # encode por si la columan son strings.
     # x2_encoded = le.fit_transform(df[label3].to_numpy()) # no debería de ser necesario ya que la columna es int.
@@ -39,9 +39,14 @@ def Reporte1(body):
     
     #     X = np.asarray(df[label2]=='Guatemala')
     # else:
-    X = np.asarray(df[label2])
-    Y = np.asarray(df[label3]).reshape(-1,1)
-    
+    if(filtro):
+        X = np.asarray(df.loc[df[filter]==label1, [label2]])
+        Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
+
+    else:
+        X = np.asarray(df[label2])
+        Y = np.asarray(df[label3]).reshape(-1,1)
+
     i = 0
     while(i<len(X)):
         # temp.append(i+1)
@@ -52,11 +57,19 @@ def Reporte1(body):
     i = 0
     while(i<len(X_TEMP)):
 
-        labels.append(X_TEMP[i])
-        poly.append({
-            "x":X_TEMP[i],
-            "y":Y[i][0]
-        })
+        if(filter):
+            labels.append(X_TEMP[i][0])
+            poly.append({
+                "x":X_TEMP[i][0],
+                "y":Y[i][0]
+            })
+            
+        else:
+            labels.append(X_TEMP[i])
+            poly.append({
+                "x":X_TEMP[i],
+                "y":Y[i][0]
+            })
         i += 1
     
     X = X.reshape(-1,1)
@@ -68,7 +81,6 @@ def Reporte1(body):
     X = polyneal_feature.fit_transform(X)
     Y = polyneal_feature.fit_transform(Y)
 
-
     #___________________________________________________________________________________________
     # Step 3: define and train a model
         
@@ -76,16 +88,19 @@ def Reporte1(body):
     linear_regressor.fit(X, Y)  # perform linear regression
     Y_pred = linear_regressor.predict(X)  # make predictions
 
-    
     i = 0
     while(i<len(X_TEMP)):
-        dispers.append({
-            "x":X_TEMP[i],
-            "y":Y_pred[i][1]
-        })
+        if(filtro):
+           dispers.append({
+                "x":X_TEMP[i][0],
+                "y":Y_pred[i][1]
+            }) 
+        else:
+            dispers.append({
+                "x":X_TEMP[i],
+                "y":Y_pred[i][1]
+            })
         i += 1
-
-  
     
     #_________________________  __________________________________________________________________
     # Step 4: calculate bias and variance
@@ -96,5 +111,4 @@ def Reporte1(body):
     # print('R2: ', r2)
 
     title = 'Degree = {}; RMSE = {}; R2 = {}'.format(nb_degree, round(rmse,2), round(r2,2))
-
     return poly, dispers, rmse, r2, labels

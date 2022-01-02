@@ -47,10 +47,11 @@ def prueba():
 def reporte1():
 
     if(request.method == 'POST'):
+        
         body = request.get_json()
-        # print(body)
         result = Reporte1(body)
-        print(result)
+        # print(result)
+
         return jsonify(
             isError = False,
             message = "Success",
@@ -65,8 +66,8 @@ def reporte1():
     return jsonify(
         isError= False,
         message= "Success",
-        statusCode = 200,
-        ), 200
+        statusCode = 402,
+        ), 402
 
 if __name__ == "__main__":
     app.run(host= '0.0.0.0', port=5000, debug=True)
