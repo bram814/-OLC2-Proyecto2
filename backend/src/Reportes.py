@@ -4,6 +4,8 @@ from sklearn.metrics import r2_score, mean_squared_error
 
 import matplotlib.pyplot as plt  # To visualize
 from sklearn import preprocessing
+from datetime import date   
+import datetime as dt
 import pandas as pd
 import numpy as np
 
@@ -19,6 +21,7 @@ def Reporte1(body):
     label1 = body['label1'] # label1  -> filtro
     label2 = body['label2'] # label2  -> encabezado 1
     label3 = body['label3'] # label3  -> encabezado 2
+    isTime = body['isTime'] # label4  -> encabezado Tiempo
     filter = body['filter'] # label5  -> encabezado de Filtro
     content = body['content'] # content -> contenido
     
@@ -27,7 +30,12 @@ def Reporte1(body):
         filtro = True
 
     df = pd.DataFrame(content)
-    
+
+    if(isTime == '1'): # el encabezado 1 es fecha
+      
+        df[f'{label2}_ordinal'] = pd.to_datetime(df[label2], dayfirst = True).apply(lambda date: date.toordinal())
+        label2 = f'{label2}_ordinal'
+
     # le = preprocessing.LabelEncoder()
     # x1_encoded = le.fit_transform(df[label2].to_numpy()) # encode por si la columan son strings.
     # x2_encoded = le.fit_transform(df[label3].to_numpy()) # no debería de ser necesario ya que la columna es int.
@@ -36,9 +44,6 @@ def Reporte1(body):
     # print(f'List: {features}')
     # data = pd.DataFrame(features) # Convierte la tupla a dataFrame.
     
-    
-    #     X = np.asarray(df[label2]=='Guatemala')
-    # else:
     if(filtro):
         X = np.asarray(df.loc[df[filter]==label1, [label2]])
         Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
@@ -48,31 +53,36 @@ def Reporte1(body):
         Y = np.asarray(df[label3]).reshape(-1,1)
 
     i = 0
-    while(i<len(X)):
-        # temp.append(i+1)
-        X[i] = f'{(i+1)}'
-        i += 1
+    if(isTime=='0' or isTime==''):
+        while(i<len(X)):
+            
+            X[i] = f'{(i+1)}'
+            i += 1
 
     X_TEMP = X
     i = 0
+    print(X)
     while(i<len(X_TEMP)):
 
         if(filter):
-            labels.append(X_TEMP[i][0])
+            labels.append(str(X_TEMP[i][0]))
             poly.append({
-                "x":X_TEMP[i][0],
-                "y":Y[i][0]
+                "x":str(X_TEMP[i][0]),
+                "y":str(Y[i][0])
             })
             
         else:
-            labels.append(X_TEMP[i])
+            labels.append(str(X_TEMP[i]))
             poly.append({
-                "x":X_TEMP[i],
-                "y":Y[i][0]
+                "x":str(X_TEMP[i]),
+                "y":str(Y[i][0])
             })
         i += 1
-    
+    if(isTime == '1'):
+        Y = Y.reshape(-1,1)
+
     X = X.reshape(-1,1)
+    # plt.scatter(X,Y)
     #___________________________________________________________________________________________
     # Step 2: data preparation.
         
@@ -92,13 +102,13 @@ def Reporte1(body):
     while(i<len(X_TEMP)):
         if(filtro):
            dispers.append({
-                "x":X_TEMP[i][0],
-                "y":Y_pred[i][1]
+                "x":str(X_TEMP[i][0]),
+                "y":str(Y_pred[i][1])
             }) 
         else:
             dispers.append({
-                "x":X_TEMP[i],
-                "y":Y_pred[i][1]
+                "x":str(X_TEMP[i]),
+                "y":str(Y_pred[i][1])
             })
         i += 1
     
@@ -109,6 +119,13 @@ def Reporte1(body):
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
+   
 
     title = 'Degree = {}; RMSE = {}; R2 = {}'.format(nb_degree, round(rmse,2), round(r2,2))
+    # plt.scatter(X, Y)
+    # plt.plot(X, Y, color='red')
+    # plt.plot(X, Y_pred, color='blue')
+    # plt.savefig("reporte1.pdf")
+    # plt.show()
+    
     return poly, dispers, rmse, r2, labels

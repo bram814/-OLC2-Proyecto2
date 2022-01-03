@@ -16,7 +16,7 @@ export async function Content(content){ // verificar usuario
     });
 }
 
-export async function Reporte1(label1, label2, label3, content, extension, grado, filter){
+export async function Reporte1(label1, label2, label3, content, extension, grado, filter, time){
 
     return fetch(ROUTE_LOCAL + 'reporte1', {
         method: 'POST',
@@ -31,7 +31,8 @@ export async function Reporte1(label1, label2, label3, content, extension, grado
             content: content,
             extension: extension,
             degree: grado,
-            filter: filter
+            filter: filter,
+            isTime: time
         }),
     })
 

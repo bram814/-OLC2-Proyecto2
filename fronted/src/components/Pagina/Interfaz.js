@@ -41,25 +41,43 @@ function Interfaz(props){
         if(prediction == 0){ //Tendencia de la infección por Covid-19 en un País.
             if(label2 != '' || label3 != ''){
                
-                // console.log(`1- ${label1}, EC1: ${label2} - EC2: ${label3}`)
-                // console.log(fileContent)
-                // console.log(fileExtension)
                 if(label4>=1){
-                    var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6);
-                    
-                    var result = await query.json();
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
 
-                    if(query.status == 200){
-                        console.log(result)
-                        setDispers(result.dispers);
-                        setPolyneal(result.poly);
-                        setR2(result.r2);
-                        setRmse(result.rmse);
-                        setLabels(result.label);
+                        if(query.status == 200){
+                            console.log(result)
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
 
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+                            console.log(result)
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
                     }else {
-                        alert('Error')
+                        alert('Debe de Ingresar el Filtro')
                     }
+                    
                 }else{
                     alert('Grado debe de ser igual o mayor a 1.')
                 }
