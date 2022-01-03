@@ -18,8 +18,7 @@ def index():
 
 @app.route(f'/cargar', methods=['POST'])
 def prueba():
-    print("----------")
-    if request.method == 'POST':
+    try:
         contenido = request.get_json()['content']
         # print(contenido)
         data = csvToJson(contenido)
@@ -28,45 +27,45 @@ def prueba():
         # print(data[0]) #obtiene la data
         # print(data[1]) #obtiene los headers
 
-        return jsonify(
-            isError= False,
-            message= "Success",
-            statusCode= 200,
-            content = content,
-            header = header
-            ), 200
-        
-
-    return jsonify(
-        isError= False,
-        message= "Success",
-        statusCode= 402,
-        ), 402
+        result = {
+            "isError": False,
+            "message": "Success",
+            "status": 200,
+            "content": content,
+            "header": header
+        }
+    except:
+        result = {
+            "status":402,
+        }
+    
+    return jsonify(result)
 
 @app.route(f'/reporte1', methods=['POST'])
 def reporte1():
-
-    if(request.method == 'POST'):
-
+    try:
+        
         body = request.get_json()
         result = Reporte1(body)
 
-        return jsonify(
-            isError = False,
-            message = "Success",
-            statusCode = 200,
-            poly = result[0],
-            dispers = result[1],
-            rmse = result[2],
-            r2 = result[3],
-            label = result[4]
-        ), 200
+        result = {
+            "isError": False,
+            "message": "Success",
+            "statusCode": 200,
+            "poly": result[0],
+            "dispers": result[1],
+            "rmse": result[2],
+            "r2": result[3],
+            "label": result[4]
+        }
+        
+    except:
+        result = {
+            "status": 402
+        }
 
-    return jsonify(
-        isError= False,
-        message= "Success",
-        statusCode = 402,
-        ), 402
+
+    return jsonify(result)
 
 if __name__ == "__main__":
     app.run(debug=True)

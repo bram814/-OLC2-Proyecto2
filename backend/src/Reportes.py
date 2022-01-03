@@ -1,3 +1,4 @@
+import sklearn
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures #grado
 from sklearn.metrics import r2_score, mean_squared_error
@@ -55,13 +56,13 @@ def Reporte1(body):
     i = 0
     if(isTime=='0' or isTime==''):
         while(i<len(X)):
-            
+
             X[i] = f'{(i+1)}'
             i += 1
 
     X_TEMP = X
+    
     i = 0
-    print(X)
     while(i<len(X_TEMP)):
 
         if(filter):
