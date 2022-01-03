@@ -6,7 +6,7 @@ import './Navbar.css'
 function Navbar(props){
 
 
-    const [prediction, setPrediction] = useState(0);
+    const [predict, setPrediction] = useState('');
     const [fileName, setFileName] = useState('');
     const [fileExtension, setFileExtension] = useState('');
     const [fileContent, setFileContent] = useState('');
@@ -33,7 +33,7 @@ function Navbar(props){
 
     async function handleChargeFile(e){
         e.preventDefault();
-        console.log("/")
+        console.log(predict)
         setFileExtension(fileName.split(".")[1]);
         
         var query = await Content(fileContent);
@@ -44,6 +44,7 @@ function Navbar(props){
             props.fileName(fileName);
             props.fileExtension(fileExtension);
             props.fileContent(result.content);
+            props.dataPrediction(predict)
             var dicHeader = [];
             var key = 0;
             result.header.map(i=>{
@@ -65,6 +66,7 @@ function Navbar(props){
     }
 
     function handlePrection(e){
+        setPrediction(e.target.value)
         props.dataPrediction(e.target.value)
     }
     
@@ -89,12 +91,14 @@ function Navbar(props){
                 <center>
                 
                     <h3>Predicción: </h3>
-                    <select className="form-select-user" value={prediction} onChange={handlePrection}>
+                    <select className="form-select-user" value={predict} onChange={handlePrection}>
+
+                        <option className="form-option">Seleccione la Predicción</option>
                             {
 
                                 Prediction.map(i => {
                                     return (
-                                        <option value={i.key} key={parseInt(i.key)}>{i.value} por Id</option>
+                                        <option value={parseInt(i.key)} key={i.key}>{i.value} por Id</option>
                                     )
                                 })
                             }

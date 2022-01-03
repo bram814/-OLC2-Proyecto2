@@ -38,7 +38,7 @@ export async function Reporte1(label1, label2, label3, content, extension, grado
 
 }
 
-export async function Reporte2(label1, label2, label3, content, extension, grado, filter, time, predict, isPrededict){
+export async function Reporte2(label1, label2, label3, content, extension, grado, filter, time, predict, isPredict){
 
     return fetch(ROUTE_LOCAL + 'reporte2', {
         method: 'POST',
@@ -56,7 +56,7 @@ export async function Reporte2(label1, label2, label3, content, extension, grado
             filter: filter,
             isTime: time,
             predict: predict,
-            isPrededict: isPrededict
+            isPredict: isPredict
         }),
     })
 

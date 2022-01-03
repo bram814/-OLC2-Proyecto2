@@ -11,8 +11,7 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 
-
-def Reporte1(body):
+def Report2(body):
 
     poly = []
     dispers = []
@@ -25,6 +24,8 @@ def Reporte1(body):
     label3 = body['label3'] # label3  -> encabezado 2
     isTime = body['isTime'] # label4  -> encabezado Tiempo
     filter = body['filter'] # label5  -> encabezado de Filtro
+    predict = body['predict'] # label7 -> predict
+    isPredict = body['isPredict'] # label8 -> si es fecha la predicción
     content = body['content'] # content -> contenido
     
     filtro = False
@@ -38,14 +39,6 @@ def Reporte1(body):
         df[f'{label2}_ordinal'] = pd.to_datetime(df[label2], dayfirst = True).apply(lambda date: date.toordinal())
         label2 = f'{label2}_ordinal'
 
-    # le = preprocessing.LabelEncoder()
-    # x1_encoded = le.fit_transform(df[label2].to_numpy()) # encode por si la columan son strings.
-    # x2_encoded = le.fit_transform(df[label3].to_numpy()) # no debería de ser necesario ya que la columna es int.
-
-    # features  = list(zip(x1_encoded, x2_encoded)) # Convertir a Tupla.
-    # print(f'List: {features}')
-    # data = pd.DataFrame(features) # Convierte la tupla a dataFrame.
-    
     if(filtro):
         X = np.asarray(df.loc[df[filter]==label1, [label2]])
         Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
@@ -114,22 +107,30 @@ def Reporte1(body):
             })
         i += 1
     
-    #_________________________  __________________________________________________________________
+    #___________________________________________________________________________________________
     # Step 4: calculate bias and variance
     
     rmse = np.sqrt(mean_squared_error(Y, Y_pred, squared=False))
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
-   
-
     title = 'Tendencia de la infección por Covid-19 en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
-    # plt.scatter(X, Y)
-    # plt.plot(X, Y, color='red')
-    # plt.plot(X, Y_pred, color='blue')
-    # plt.savefig("reporte1.pdf")
-    # plt.show()
-    print(title)
-    return poly, dispers, title, r2, labels
+   
+    #___________________________________________________________________________________________
+    # Step 5: prediction
+    
+    if(isPredict == '1'):
+        print('entro')
 
+        d = pd.to_datetime(predict, dayfirst = True)
+        predict = d.toordinal()
+    
+    else:
 
+        print(isPredict)
+        print(predict)
+
+    new_predict = linear_regressor.predict(polyneal_feature.fit_transform([[predict]]))[0][1]
+
+   
+    return poly, dispers, title, new_predict, labels

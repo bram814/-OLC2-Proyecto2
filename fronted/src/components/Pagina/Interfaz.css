@@ -93,7 +93,8 @@
     top: 20px;
 }
 
-.div2PDF{
-    /* height: 20%; */
-    
+.form-predict{
+    position: relative;
+    left: 200px;
+    font-family: "Times New Roman", Times, serif;
 }

@@ -13,8 +13,8 @@ function Interfaz(props){
     const [fileName, setFileName] = useState('');
     const [fileContent, setFileContent] = useState('');
     const [fileExtension, setFileExtension] = useState('');
-    const [prediction, setPrediction] = useState(0);
-    const [dataPrediction, setDataPrediction] = useState('');
+    const [prediction, setPrediction] = useState('');
+    // const [dataPrediction, setDataPrediction] = useState('');
 
     // Etiquetas
     const [label1, setLabel1] = useState('');
@@ -37,17 +37,20 @@ function Interfaz(props){
     const [rmse, setRmse] = useState(0);
     const [r2, setR2] = useState(0);
     const [labels, setLabels] = useState(null);
+    const [predict, setPredict] = useState('')
 
 
     async function handlePrediction(e){
         
-        e.preventDefault();
-        if(prediction == 0){ //Tendencia de la infección por Covid-19 en un País.
+        // e.preventDefault();
+        
+        if(prediction == 1){ //Tendencia de la infección por Covid-19 en un País.
+            console.log(prediction)
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
                     if(label1 != '' && label6 != ''){
-                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
                         
                         var result = await query.json();
 
@@ -91,12 +94,13 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
-        }else if(prediction == 1){ // Predicción de Infectados en un País.
+        }else if(prediction == 2){ // Predicción de Infectados en un País.
+            console.log(prediction)
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
                     if(label1 != '' && label6 != ''){
-                        var query = await Reporte2(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        var query = await Reporte2(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
                         
                         var result = await query.json();
 
@@ -107,12 +111,13 @@ function Interfaz(props){
                             setR2(result.r2);
                             setRmse(result.rmse);
                             setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')
                         }
                     }else if(label1 == '' && label6 ==''){
-                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        var query = await Reporte2(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
                         
                         var result = await query.json();
 
@@ -123,6 +128,7 @@ function Interfaz(props){
                             setR2(result.r2);
                             setRmse(result.rmse);
                             setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')
@@ -149,13 +155,13 @@ function Interfaz(props){
         const input = document.getElementById('DivToPrintChart');
         html2canvas(input)
         .then((canvas) => {
-            let imgWidth = 208;
+            let imgWidth = 200;
             let imgHeight = canvas.height * imgWidth / canvas.width;
             const imgData = canvas.toDataURL('img/png');
             const pdf = new jsPDF('p', 'mm', 'a4');
             pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-            // pdf.output('dataurlnewwindow');
-            pdf.save(`Reporte.pdf`);
+
+            pdf.save(`ReporteChart.pdf`);
         })
         ;
     }
@@ -267,13 +273,22 @@ function Interfaz(props){
 
             
                 <div id="DivToPrintChart">
-                        
+                    <div>
+                        <center>
+                            <h6 className="form-predict">{rmse}</h6>
+                            <h6 className="form-predict">Predicción {predict}</h6>
+                        </center>
+                    </div>
+                    <div>
+                            
                         <PolynealChart
                             title = {rmse} 
                             poly = {polyneal} 
                             dispers = {dispers} 
                             labels = {labels}                
                         />
+
+                    </div>
                 </div>
              
               

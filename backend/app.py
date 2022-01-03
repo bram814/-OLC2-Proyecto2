@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from flask_cors import CORS
 from src.Convert import csvToJson
 from src.Reportes import *
+from src.Reporte2 import *
 
 
 app = Flask(__name__)
@@ -71,17 +72,18 @@ def reporte2():
     try:
         
         body = request.get_json()
-        result = Reporte1(body)
-
+        
+        result = Report2(body)
+        # print(result)
         result = {
             "isError": False,
             "message": "Success",
             "status": 200,
-            # "poly": result[0],
-            # "dispers": result[1],
-            # "rmse": result[2],
-            # "r2": result[3],
-            # "label": result[4]
+            "poly": result[0],
+            "dispers": result[1],
+            "rmse": result[2],
+            "r2": result[3],
+            "label": result[4]
         }
         
     except:
