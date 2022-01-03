@@ -12,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 def Report5(body):
-
+    
     poly = []
     dispers = []
     labels = []
@@ -27,6 +27,8 @@ def Report5(body):
     predict = body['predict'] # label7 -> predict
     isPredict = body['isPredict'] # label8 -> si es fecha la predicción
     content = body['content'] # content -> contenido
+    filterDep = body['filterDep'] # Filtro del Dep
+    dep = body['dep']             # nombre del Dep
     
     filtro = False
     if(label1 != ''):
@@ -42,6 +44,11 @@ def Report5(body):
     if(filtro):
         X = np.asarray(df.loc[df[filter]==label1, [label2]])
         Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
+        # X = df.loc[df[filter]==label1]
+        # X = np.asarray(X.loc[df[filterDep]==dep, [label2]])
+
+        # Y = Y = df.loc[df[filter]==label1]
+        # Y = np.asarray(Y.loc[df[filterDep]==dep, [label3]]).reshape(-1,1)
 
     else:
         X = np.asarray(df[label2])
@@ -114,7 +121,7 @@ def Report5(body):
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
-    title = 'Tendencia de la infección por Covid-19 en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
+    title = 'Predicción de mortalidad por COVID en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
    
     #___________________________________________________________________________________________
     # Step 5: prediction
