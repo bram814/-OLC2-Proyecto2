@@ -114,7 +114,7 @@ def Report2(body):
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
-    title = 'Tendencia de la infección por Covid-19 en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
+    title = 'Predicción de Infectados en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
    
     #___________________________________________________________________________________________
     # Step 5: prediction

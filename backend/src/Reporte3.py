@@ -11,8 +11,9 @@ import datetime as dt
 import pandas as pd
 import numpy as np
 
-def Report4(body):
-    
+
+def Report3(body):
+
     poly = []
     dispers = []
     labels = []
@@ -24,11 +25,7 @@ def Report4(body):
     label3 = body['label3'] # label3  -> encabezado 2
     isTime = body['isTime'] # label4  -> encabezado Tiempo
     filter = body['filter'] # label5  -> encabezado de Filtro
-    # predict = body['predict'] # label7 -> predict
-    # isPredict = body['isPredict'] # label8 -> si es fecha la predicción
     content = body['content'] # content -> contenido
-    filterDep = body['filterDep'] # Filtro del Dep
-    dep = body['dep']             # nombre del Dep
     
     filtro = False
     if(label1 != ''):
@@ -41,12 +38,17 @@ def Report4(body):
         df[f'{label2}_ordinal'] = pd.to_datetime(df[label2], dayfirst = True).apply(lambda date: date.toordinal())
         label2 = f'{label2}_ordinal'
 
-    if(filtro):
-        X = df.loc[df[filter]==label1]
-        X = np.asarray(X.loc[df[filterDep]==dep, [label2]])
+    # le = preprocessing.LabelEncoder()
+    # x1_encoded = le.fit_transform(df[label2].to_numpy()) # encode por si la columan son strings.
+    # x2_encoded = le.fit_transform(df[label3].to_numpy()) # no debería de ser necesario ya que la columna es int.
 
-        Y = Y = df.loc[df[filter]==label1]
-        Y = np.asarray(Y.loc[df[filterDep]==dep, [label3]]).reshape(-1,1)
+    # features  = list(zip(x1_encoded, x2_encoded)) # Convertir a Tupla.
+    # print(f'List: {features}')
+    # data = pd.DataFrame(features) # Convierte la tupla a dataFrame.
+    
+    if(filtro):
+        X = np.asarray(df.loc[df[filter]==label1, [label2]])
+        Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
 
     else:
         X = np.asarray(df[label2])
@@ -112,30 +114,22 @@ def Report4(body):
             })
         i += 1
     
-    #___________________________________________________________________________________________
+    #_________________________  __________________________________________________________________
     # Step 4: calculate bias and variance
     
     rmse = np.sqrt(mean_squared_error(Y, Y_pred, squared=False))
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
-    title = 'Predicción de mortalidad por COVID en {} del de Departamento {}. \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, dep, nb_degree, round(rmse,2), round(r2,2))
    
-    #___________________________________________________________________________________________
-    # Step 5: prediction
-    
-    # if(isPredict == '1'):
-    #     print('entro')
 
-    #     d = pd.to_datetime(predict, dayfirst = True)
-    #     predict = d.toordinal()
-    
-    # else:
-
-    #     print(isPredict)
-    #     print(predict)
-
-    # new_predict = linear_regressor.predict(polyneal_feature.fit_transform([[predict]]))[0][1]
-
-   
+    title = 'Indice de Progresión de la pandemia en {} \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
+    # plt.scatter(X, Y)
+    # plt.plot(X, Y, color='red')
+    # plt.plot(X, Y_pred, color='blue')
+    # plt.savefig("reporte1.pdf")
+    # plt.show()
+    print(title)
     return poly, dispers, title, r2, labels
+
+

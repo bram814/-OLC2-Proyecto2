@@ -3,6 +3,7 @@ from flask_cors import CORS
 from src.Convert import csvToJson
 from src.Reportes import *
 from src.Reporte2 import *
+from src.Reporte3 import *
 from src.Reporte4 import *
 
 
@@ -95,6 +96,30 @@ def reporte2():
 
     return jsonify(result)
 
+@app.route(f'/reporte3', methods=['POST'])
+def reporte3():
+    try:
+        
+        body = request.get_json()
+        result = Report3(body)
+
+        result = {
+            "isError": False,
+            "message": "Success",
+            "status": 200,
+            "poly": result[0],
+            "dispers": result[1],
+            "rmse": result[2],
+            "r2": result[3],
+            "label": result[4]
+        }
+        
+    except:
+        result = {
+            "status": 402
+        }
+
+    return jsonify(result)
 
 @app.route(f'/reporte4', methods=['POST'])
 def reporte4():

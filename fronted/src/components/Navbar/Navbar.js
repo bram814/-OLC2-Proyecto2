@@ -98,7 +98,7 @@ function Navbar(props){
 
                                 Prediction.map(i => {
                                     return (
-                                        <option value={parseInt(i.key)} key={i.key}>{i.value} por Id</option>
+                                        <option value={parseInt(i.key)} key={i.key}>{i.key}).- {i.value} por Id</option>
                                     )
                                 })
                             }
