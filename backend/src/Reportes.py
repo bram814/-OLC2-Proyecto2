@@ -1,9 +1,10 @@
 import sklearn
+
 from sklearn.linear_model import LinearRegression
 from sklearn.preprocessing import PolynomialFeatures #grado
 from sklearn.metrics import r2_score, mean_squared_error
 
-import matplotlib.pyplot as plt  # To visualize
+# import matplotlib.pyplot as plt  # To visualize
 from sklearn import preprocessing
 from datetime import date   
 import datetime as dt

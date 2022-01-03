@@ -10,7 +10,7 @@ CORS(app)
 data = None;
 # route = '/api'
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
@@ -68,4 +68,4 @@ def reporte1():
     return jsonify(result)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5000, debug=True)

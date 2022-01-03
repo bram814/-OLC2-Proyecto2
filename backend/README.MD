@@ -9,28 +9,31 @@ _________________________
 ```bash 
 pip install gunicorn
 ```
-#### Instalamos el Entorno Virtual:
+_______________________
+#### Instalamos el Entorno Virtual y lo creamos:
 
 ```bash
-pip install pipenv
+pip install virtualenv
+python3 -m venv venv
 ```
+___________________________
+#### Accedemos al enterno virtual
+```bash
+$ source venv/bin/activate
+```
+Si se ejecuto correctamente debe de aparecer de esta forma
 
+```bash
+(venv) abraham@jash-linux:~/backend$ 
+```
 ----
 
 #### Instalar todas las librerías a utilizar en el entorno virtual
 ```bash
-pipenv install flask gunicorn flask_cors 
+pip install flask gunicorn flask_cors 
+pip install -U scikit-learn
+pip install pandas
 ```
-#### Ingresar al entorno virtual
-```bash
-pipenv shell
-```
-Si se ejecuto correctamente de debe de aparecer esta forma
-
-```bash
-(backend-FXpoKE6S) abraham@jash-linux:~/backend$ 
-```
-
 ------------
 
 
@@ -99,9 +102,3 @@ set git remote heroku to https://git.heroku.com/nameless-dusk-97106.git
 `python -m pip install -U matplotlib`
 
 
---------------------------
-OTROS COMANDOS
-
-`pip install -U scikit-learn`
-
-`pip install pandas`
