@@ -1,8 +1,10 @@
 import Navbar from "../Navbar/Navbar";
 import React, {useState} from 'react';
 import { Prediction } from "./../Reporte/Reportes";
-import { Content, Reporte1 } from "../Routes/Route";
+import { Content, Reporte1, Reporte2} from "../Routes/Route";
 import PolynealChart from "../Chart/PolynealChart";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
 import './Interfaz.css'
 
 
@@ -21,6 +23,8 @@ function Interfaz(props){
     const [label4, setLabel4] = useState(1);
     const [label5, setLabel5] = useState('');
     const [label6, setLabel6] = useState('');
+    const [label7, setLabel7] = useState('');
+    const [label8, setLabel8] = useState('');
 
 
     // Parametrizar
@@ -43,12 +47,12 @@ function Interfaz(props){
                
                 if(label4>=1){
                     if(label1 != '' && label6 != ''){
-                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
                         
                         var result = await query.json();
 
                         if(query.status == 200){
-                            console.log(result)
+
                             setDispers(result.dispers);
                             setPolyneal(result.poly);
                             setR2(result.r2);
@@ -64,7 +68,56 @@ function Interfaz(props){
                         var result = await query.json();
 
                         if(query.status == 200){
-                            console.log(result)
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+        }else if(prediction == 1){ // Predicción de Infectados en un País.
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte2(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
                             setDispers(result.dispers);
                             setPolyneal(result.poly);
                             setR2(result.r2);
@@ -92,6 +145,22 @@ function Interfaz(props){
         
     }
 
+    async function handleDownload(e){
+        const input = document.getElementById('DivToPrintChart');
+        html2canvas(input)
+        .then((canvas) => {
+            let imgWidth = 208;
+            let imgHeight = canvas.height * imgWidth / canvas.width;
+            const imgData = canvas.toDataURL('img/png');
+            const pdf = new jsPDF('p', 'mm', 'a4');
+            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            // pdf.output('dataurlnewwindow');
+            pdf.save(`Reporte.pdf`);
+        })
+        ;
+    }
+    
+
     function getParametrizar(e){ setParametrizar(e.target.value); }
 
     function handleInputChange1(e){ setLabel1(e.target.value); }
@@ -100,19 +169,22 @@ function Interfaz(props){
     function handleInputChange4(e){ setLabel4(e.target.value); }
     function handleInputChange5(e){ setLabel5(e.target.value); }
     function handleInputChange6(e){ setLabel6(e.target.value); }
+    function handleInputChange7(e){ setLabel7(e.target.value); }
+    function handleInputChange8(e){ setLabel8(e.target.value); }
 
     return(
-
         <div>
-            <header>
-                <Navbar 
+             <Navbar 
                     fileName       = {setFileName}        // Nombre de Archivo.
                     fileContent    = {setFileContent}     // Contenido del Archivo.
                     fileExtension  = {setFileExtension}   // Extensión del Archivo.
                     dataPrediction = {setPrediction}      // Predicción para el Reporte.
                     dataHeader     = {setHeader}          // Cabecera del contenido.
                 />
-            </header>
+            
+        <div className="container">
+           
+               
 
             
             <div className="row">
@@ -177,23 +249,36 @@ function Interfaz(props){
                         <button className="form-boton" type="submit" onClick={handlePrediction}>Cargar Datos</button>
                     </div>
                 </div>
-                <div className="col">
-
+                <div className="form-div-2">
+                        
+                    <label className="form-label-2">Predicción</label>
+                    <input className="etiqueta7" type="text" placeholder="Prediccion" value={label7} onChange={handleInputChange7} /> 
+                    <select className="form-option-3" value={label8} onChange={handleInputChange8}>
+                            <option className="form-option">Encabezado Tiempo</option> 
+                            <option className="form-option" value={1} key={1}>Si</option>
+                            <option className="form-option" value={0} key={0}>No</option>
+                                 
+                    </select>
                 </div>
-               
-            </div>
-            <div className="row">
-                <PolynealChart
-                    title = {'Reporte1'} 
-                    poly = {polyneal} 
-                    dispers = {dispers} 
-                    labels = {labels}                
-                />
-
-            </div>
             
+            </div>
+            </div>
+            <div className="container">
 
-
+            
+                <div id="DivToPrintChart">
+                        
+                        <PolynealChart
+                            title = {rmse} 
+                            poly = {polyneal} 
+                            dispers = {dispers} 
+                            labels = {labels}                
+                        />
+                </div>
+             
+              
+                <button className="form-boton" type="submit" onClick={handleDownload}>Descargar</button>
+                </div>
 
         </div>
     );

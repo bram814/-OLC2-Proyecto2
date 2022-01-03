@@ -47,7 +47,7 @@ const PolynealChart = ({ title, poly, dispers, labels }) => {
 
   return (
     <>
-      <Line data={data} options={options} />
+      <Line data={data} options={options} height={1}/>
     </>
   );
 };

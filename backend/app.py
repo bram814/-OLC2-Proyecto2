@@ -51,12 +51,37 @@ def reporte1():
         result = {
             "isError": False,
             "message": "Success",
-            "statusCode": 200,
+            "status": 200,
             "poly": result[0],
             "dispers": result[1],
             "rmse": result[2],
             "r2": result[3],
             "label": result[4]
+        }
+        
+    except:
+        result = {
+            "status": 402
+        }
+
+    return jsonify(result)
+
+@app.route(f'/reporte2', methods=['POST'])
+def reporte2():
+    try:
+        
+        body = request.get_json()
+        result = Reporte1(body)
+
+        result = {
+            "isError": False,
+            "message": "Success",
+            "status": 200,
+            # "poly": result[0],
+            # "dispers": result[1],
+            # "rmse": result[2],
+            # "r2": result[3],
+            # "label": result[4]
         }
         
     except:
