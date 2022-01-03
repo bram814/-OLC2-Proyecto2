@@ -7,6 +7,7 @@ import {
     Reporte2, 
     Reporte4,
     Reporte5,
+    Reporte9
 } from "../Routes/Route";
 import PolynealChart from "../Chart/PolynealChart";
 import html2canvas from "html2canvas";
@@ -52,8 +53,8 @@ function Interfaz(props){
         
         // e.preventDefault();
         
-        if(prediction == 1){ //Tendencia de la infección por Covid-19 en un País.
-            
+        if(prediction == 1){       // Tendencia de la infección por Covid-19 en un País.
+            setPredict('');
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
@@ -154,7 +155,8 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
-        }else if(prediction == 3){
+        }else if(prediction == 3){ // Indice de Progresión de la pandemia
+            setPredict('');
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
@@ -203,13 +205,13 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
-        }else if(prediction == 4){ //Tendencia de la infección por Covid-19 en un País.
+        }else if(prediction == 4){ // Predicción de mortalidad por COVID en un Departamento..
             
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
                     if(label1 != '' && label6 != ''){
-                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label9, label10);
+                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8, label9, label10);
                         
                         var result = await query.json();
 
@@ -220,12 +222,13 @@ function Interfaz(props){
                             setR2(result.r2);
                             setRmse(result.rmse);
                             setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')
                         }
                     }else if(label1 == '' && label6 ==''){
-                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label9, label10);
+                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8, label9, label10);
                         
                         var result = await query.json();
 
@@ -236,6 +239,7 @@ function Interfaz(props){
                             setR2(result.r2);
                             setRmse(result.rmse);
                             setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')
@@ -305,8 +309,63 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
+        }else if(prediction == 6){ // Análisis del número de muertes por coronavirus en un País
+            alert("No está Funcionando");
+        }else if(prediction == 7){ // Tendencia del número de infectados por día de un País.
+            alert("No está Funcionando");
+        }else if(prediction == 8){ // Predicción de casos de un país para un año.
+            alert("No está Funcionando");
+        }else if(prediction == 9){ // Tendencia de la vacunación de en un País.
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte9(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte9(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }
-        
     }
 
     async function handleDownload(e){

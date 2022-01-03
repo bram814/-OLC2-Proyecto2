@@ -6,6 +6,10 @@ from src.Reporte2 import *
 from src.Reporte3 import *
 from src.Reporte4 import *
 from src.Reporte5 import *
+# from src.Reporte6 import *
+# from src.Reporte7 import *
+# from src.Reporte8 import *
+from src.Reporte9 import *
 
 
 app = Flask(__name__)
@@ -156,6 +160,33 @@ def reporte5():
         body = request.get_json()
         
         result = Report5(body)
+        # print(result)
+        result = {
+            "isError": False,
+            "message": "Success",
+            "status": 200,
+            "poly": result[0],
+            "dispers": result[1],
+            "rmse": result[2],
+            "r2": result[3],
+            "label": result[4]
+        }
+        
+    except:
+        result = {
+            "status": 402
+        }
+
+
+    return jsonify(result)
+
+@app.route(f'/reporte9', methods=['POST'])
+def reporte9():
+    try:
+        
+        body = request.get_json()
+        
+        result = Report9(body)
         # print(result)
         result = {
             "isError": False,
