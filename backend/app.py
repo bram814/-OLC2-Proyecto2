@@ -50,11 +50,6 @@ def reporte1():
 
         body = request.get_json()
         result = Reporte1(body)
-        # print(result[0])
-        # print(result[1])
-        # print(result[2])
-        # print(result[3])
-        # print(result[4])
 
         return jsonify(
             isError = False,
@@ -74,4 +69,4 @@ def reporte1():
         ), 402
 
 if __name__ == "__main__":
-    app.run(host= '0.0.0.0', port=5000, debug=True)
+    app.run(port=5000, debug=True)
