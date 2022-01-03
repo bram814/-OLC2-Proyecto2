@@ -7,6 +7,8 @@ import {
     Reporte2, 
     Reporte4,
     Reporte5,
+    Reporte6,
+    Reporte7,
     Reporte9
 } from "../Routes/Route";
 import PolynealChart from "../Chart/PolynealChart";
@@ -34,6 +36,7 @@ function Interfaz(props){
     const [label8, setLabel8] = useState('');
     const [label9, setLabel9] = useState('');
     const [label10, setLabel10] = useState('');
+    const [label11, setLabel11] = useState('');
 
 
     // Parametrizar
@@ -310,9 +313,106 @@ function Interfaz(props){
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
         }else if(prediction == 6){ // Análisis del número de muertes por coronavirus en un País
-            alert("No está Funcionando");
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte6(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte6(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }else if(prediction == 7){ // Tendencia del número de infectados por día de un País.
-            alert("No está Funcionando");
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte7(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte7(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }else if(prediction == 8){ // Predicción de casos de un país para un año.
             alert("No está Funcionando");
         }else if(prediction == 9){ // Tendencia de la vacunación de en un País.
@@ -365,6 +465,8 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
+        }else if(prediction == 10){
+
         }
     }
 
@@ -396,6 +498,7 @@ function Interfaz(props){
     function handleInputChange8(e){ setLabel8(e.target.value); }
     function handleInputChange9(e){ setLabel9(e.target.value); }
     function handleInputChange10(e){ setLabel10(e.target.value); }
+    function handleInputChange11(e){ setLabel11(e.target.value); }
 
     return(
         <div>
@@ -419,6 +522,9 @@ function Interfaz(props){
                     </div>
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Filtro País" value={label1} onChange={handleInputChange1} /> 
+                    </div>
+                    <div>
+                        <input className="etiqueta1" type="text" placeholder="Filtro País Comparativo" value={label1} onChange={handleInputChange1} /> 
                     </div>
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Filtro Departamento" value={label10} onChange={handleInputChange10} /> 
@@ -501,7 +607,7 @@ function Interfaz(props){
                                  
                     </select>
                 </div>
-            
+
             </div>
             </div>
             <div className="container">

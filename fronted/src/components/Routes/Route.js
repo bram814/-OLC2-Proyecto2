@@ -136,6 +136,54 @@ export async function Reporte5(label1, label2, label3, content, extension, grado
 
 }
 
+export async function Reporte6(label1, label2, label3, content, extension, grado, filter, time){
+
+    return fetch(ROUTE_LOCAL + 'reporte6', {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            label1: label1,
+            label2: label2,
+            label3: label3,
+            content: content,
+            extension: extension,
+            degree: grado,
+            filter: filter,
+            isTime: time
+        }),
+    })
+
+}
+
+
+export async function Reporte7(label1, label2, label3, content, extension, grado, filter, time, predict, isPredict){
+
+    return fetch(ROUTE_LOCAL + 'reporte7', {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            label1: label1,
+            label2: label2,
+            label3: label3,
+            content: content,
+            extension: extension,
+            degree: grado,
+            filter: filter,
+            isTime: time,
+            predict: predict,
+            isPredict: isPredict
+        }),
+    })
+
+}
+
+
 export async function Reporte9(label1, label2, label3, content, extension, grado, filter, time){
 
     return fetch(ROUTE_LOCAL + 'reporte9', {
