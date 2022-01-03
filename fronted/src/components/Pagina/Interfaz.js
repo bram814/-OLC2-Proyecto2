@@ -1,7 +1,12 @@
 import Navbar from "../Navbar/Navbar";
 import React, {useState} from 'react';
 import { Prediction } from "./../Reporte/Reportes";
-import { Content, Reporte1, Reporte2} from "../Routes/Route";
+import { 
+    Content, 
+    Reporte1, 
+    Reporte2, 
+    Reporte4
+} from "../Routes/Route";
 import PolynealChart from "../Chart/PolynealChart";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
@@ -25,6 +30,7 @@ function Interfaz(props){
     const [label6, setLabel6] = useState('');
     const [label7, setLabel7] = useState('');
     const [label8, setLabel8] = useState('');
+    const [label9, setLabel9] = useState('');
 
 
     // Parametrizar
@@ -45,7 +51,7 @@ function Interfaz(props){
         // e.preventDefault();
         
         if(prediction == 1){ //Tendencia de la infección por Covid-19 en un País.
-            console.log(prediction)
+            
             if(label2 != '' || label3 != ''){
                
                 if(label4>=1){
@@ -146,8 +152,59 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
+        }else if(prediction == 3){
+            alert("sin funcionalidad");
+        }else if(prediction == 4){ //Tendencia de la infección por Covid-19 en un País.
+            
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label9, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte4(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label9, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }
-       
         
     }
 
@@ -177,6 +234,7 @@ function Interfaz(props){
     function handleInputChange6(e){ setLabel6(e.target.value); }
     function handleInputChange7(e){ setLabel7(e.target.value); }
     function handleInputChange8(e){ setLabel8(e.target.value); }
+    function handleInputChange9(e){ setLabel9(e.target.value); }
 
     return(
         <div>
@@ -199,14 +257,30 @@ function Interfaz(props){
                         <label className="form-label">PARAMETRIZAR DATOS </label>
                     </div>
                     <div>
-                        <input className="etiqueta1" type="text" placeholder="Filtro" value={label1} onChange={handleInputChange1} /> 
+                        <input className="etiqueta1" type="text" placeholder="Filtro País" value={label1} onChange={handleInputChange1} /> 
+                    </div>
+                    <div>
+                        <input className="etiqueta1" type="text" placeholder="Filtro Departamento" value={label8} onChange={handleInputChange8} /> 
                     </div>
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Grado" value={label4} onChange={handleInputChange4} /> 
                     </div>
                     <div>
                         <select className="form-option-1" value={label6} onChange={handleInputChange6}>
-                            <option className="form-option">Encabezado del Filtro</option>
+                            <option className="form-option">Encabezado del Filtro País</option>
+                            {
+                                
+                                header.map(i=>{
+                                    return(
+                                        <option className="form-option" value={i.value} key={i.key}>{i.value}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <select className="form-option-1" value={label9} onChange={handleInputChange9}>
+                            <option className="form-option">Encabezado del Filtro Dep.</option>
                             {
                                 
                                 header.map(i=>{
