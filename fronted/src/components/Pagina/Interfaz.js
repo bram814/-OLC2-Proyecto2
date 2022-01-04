@@ -17,6 +17,7 @@ import {
     Reporte12,
     Reporte13,
     Reporte14,
+    Reporte15,
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -813,6 +814,58 @@ function Interfaz(props){
                             setR2(result.r2);
                             setRmse(result.rmse);
                             setLabels(result.label);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+        }else if(prediction == 15){ // Predicción de mortalidad por COVID en un Departamento..
+            
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte15(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8, label9, label10);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte15(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8, label9, label10);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')
