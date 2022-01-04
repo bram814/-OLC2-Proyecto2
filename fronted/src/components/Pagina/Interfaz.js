@@ -18,6 +18,7 @@ import {
     Reporte13,
     Reporte14,
     Reporte15,
+    Reporte16,
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -866,6 +867,56 @@ function Interfaz(props){
                             setRmse(result.rmse);
                             setLabels(result.label);
                             setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+        }else if(prediction == 16){
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+
+                        var query = await Reporte16(label1, label2, label3, fileContent, fileExtension, label6, label9, label10);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setBarras(result.bar);
+                            setLabels(result.labels)
+                            setTitleBarras(result.title)
+                            setDescripcionBarras(result.descr)
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+
+                        var query = await Reporte16(label1, label2, label3, fileContent, fileExtension, label6, label9, label10);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setBarras(result.bar);
+                            setLabels(result.labels)
+                            setTitleBarras(result.title)
+                            setDescripcionBarras(result.descr)
 
                         }else {
                             alert('Error')
