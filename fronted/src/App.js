@@ -3,7 +3,7 @@ import Interfaz from "./components/Pagina/Interfaz";
 import "./styles.css";
 
 // import { Line } from "react-chartjs-2";
-import BarChart from "./components/BarChart";
+// import BarChart from "./components/BarChart";
 
 // const data = {
 //   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],

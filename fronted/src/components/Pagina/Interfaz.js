@@ -11,8 +11,10 @@ import {
     Reporte6,
     Reporte7,
     Reporte9,
-    Reporte10
+    Reporte10,
+    Reporte11,
 } from "../Routes/Route";
+import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
 import PolynealChartCompare from "../Chart/PolynealChartCompare";
 import html2canvas from "html2canvas";
@@ -61,6 +63,11 @@ function Interfaz(props){
     const [r22, setR22] = useState(0);
     const [labels2, setLabels2] = useState(null);
 
+    // Bar
+    const[barras, setBarras] = useState(null);
+    const[titleBarras , setTitleBarras] = useState('');
+    const[descripcionBarras, setDescripcionBarras] =useState('');
+
     async function handlePrediction(e){
         
         // e.preventDefault();
@@ -75,6 +82,8 @@ function Interfaz(props){
         setR22(0);
         setRmse2(0);
         setLabels2(null);
+
+        setBarras(null);
 
         if(prediction == 1){       // Tendencia de la infección por Covid-19 en un País.
             setPredict('');
@@ -552,6 +561,56 @@ function Interfaz(props){
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
 
+        }else if(prediction == 11){
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+
+                        var query = await Reporte11(label1, label2, label3, fileContent, fileExtension, label6);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setBarras(result.bar);
+                            setLabels(result.labels)
+                            setTitleBarras(result.title)
+                            setDescripcionBarras(result.descr)
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+
+                        var query = await Reporte11(label1, label2, label3, fileContent, fileExtension, label6);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setBarras(result.bar);
+                            setLabels(result.labels)
+                            setTitleBarras(result.title)
+                            setDescripcionBarras(result.descr)
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }
     }
 
@@ -701,20 +760,45 @@ function Interfaz(props){
                 <div id="DivToPrintChart">
                     <div>
                         <center>
-                            <h6 className="form-predict">{rmse}</h6>
-                            <h6 className="form-predict">Predicción {predict}</h6>
+                            {
+                                barras != null &&
+                                <div>
+                                    <h6 className="form-predict">{titleBarras}</h6>
+                                    <h6 className="form-predict">{descripcionBarras}</h6>
+                                    
+                                </div>
+                            }
+                            {
+                                barras == null &&
+                                <div>
+
+                                    <h6 className="form-predict">{rmse}</h6>
+                                    <h6 className="form-predict">Predicción {predict}</h6>
+                                </div>
+                                
+                            }
                         </center>
                     </div>
                     <div>
-                            
+                        {
+                            barras!=null &&
+                            <BarChart 
+                                title={titleBarras}
+                                value={barras}
+                                labels={labels}
+                            />
+                        }
+                    </div>
+                    <div>
+                        {
+                        barras==null &&
                         <PolynealChart
                             title = {rmse} 
                             poly = {polyneal} 
                             dispers = {dispers} 
                             labels = {labels}                
                         />
-
-                       
+                       }
                     </div>
                     <div>
                         {
