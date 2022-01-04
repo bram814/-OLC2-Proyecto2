@@ -19,6 +19,7 @@ import {
     Reporte14,
     Reporte15,
     Reporte16,
+    Reporte17
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -917,6 +918,57 @@ function Interfaz(props){
                             setLabels(result.labels)
                             setTitleBarras(result.title)
                             setDescripcionBarras(result.descr)
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+        }else if(prediction == 17){ // Tendencia del número de infectados por día de un País.
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte17(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte17(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
 
                         }else {
                             alert('Error')

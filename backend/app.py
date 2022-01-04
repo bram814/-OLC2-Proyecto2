@@ -17,6 +17,7 @@ from src.Reporte13 import *
 from src.Reporte14 import *
 from src.Reporte15 import *
 from src.Reporte16 import *
+from src.Reporte17 import *
 
 
 app = Flask(__name__)
@@ -471,6 +472,34 @@ def reporte16():
             "title": result[1],
             "labels": result[2],
             "descr": result[3],
+        }
+        
+    except:
+        result = {
+            "status": 402
+        }
+
+
+    return jsonify(result)
+
+
+@app.route(f'/reporte17', methods=['POST'])
+def reporte17():
+    try:
+        
+        body = request.get_json()
+        
+        result = Report17(body)
+        # print(result)
+        result = {
+            "isError": False,
+            "message": "Success",
+            "status": 200,
+            "poly": result[0],
+            "dispers": result[1],
+            "rmse": result[2],
+            "r2": result[3],
+            "label": result[4]
         }
         
     except:
