@@ -13,6 +13,7 @@ import {
     Reporte9,
     Reporte10,
     Reporte11,
+    Reporte12,
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -611,6 +612,71 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
+        }else if(prediction == 12){ // compare
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte12(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label11);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers[0]);
+                            setPolyneal(result.poly[0]);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label[0]);
+
+                            setDispers2(result.dispers[1]);
+                            setPolyneal2(result.poly[1]);
+                            setR22(result.r2);
+                            setRmse2(result.rmse);
+                            setLabels2(result.label[1]);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte12(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label11);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers[0]);
+                            setPolyneal(result.poly[0]);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label[0]);
+
+                            setDispers2(result.dispers[1]);
+                            setPolyneal2(result.poly[1]);
+                            setR22(result.r2);
+                            setRmse2(result.rmse);
+                            setLabels2(result.label[1]);
+
+
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+
         }
     }
 
