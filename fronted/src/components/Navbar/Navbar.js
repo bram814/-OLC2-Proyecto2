@@ -2,6 +2,7 @@ import { Prediction } from "../Reporte/Reportes";
 import { Content } from "../Routes/Route";
 import React, {useState} from 'react';
 import './Navbar.css'
+import * as XLSX from 'xlsx';
 
 function Navbar(props){
 
@@ -14,16 +15,44 @@ function Navbar(props){
     function handleFileChange(e){
         try{
             const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = () => {
-                props.fileName(file.name);
-                props.fileContent(reader.result);
-                props.fileExtension(file.name.split(".")[1]);
-                setFileName(file.name);
-                setFileContent(reader.result);
-                setFileExtension(file.name.split(".")[1]);
+            if(file.name.split(".")[1] == 'xlsx'){
+    
+                var files = e.target.files, f = files[0];
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    var data = e.target.result;
+                    let readedData = XLSX.read(data, {type: 'binary'});
+                    const wsname = readedData.SheetNames[0];
+                    const ws = readedData.Sheets[wsname];
+                    // console.log(ws)
+                    /* Convert array to csv*/
+                    const dataParse = XLSX.utils.sheet_to_csv(ws, {header:1});
+                    // console.log(dataParse)
+                    // const dataParse = XLSX.stream.to_json(ws);
+                    props.fileName(f.name);
+                    props.fileContent(dataParse);
+                    props.fileExtension(f.name.split(".")[1]);
+                    setFileName(f.name);
+                    setFileContent(dataParse);
+                    setFileExtension(f.name.split(".")[1]);
+
+                };
+                reader.readAsBinaryString(f)
+
+
+            }else if(file.name.split(".")[1] == 'csv'){
+                const reader = new FileReader();
+                reader.readAsText(file);
+                reader.onload = () => {
+                    props.fileName(file.name);
+                    props.fileContent(reader.result);
+                    props.fileExtension(file.name.split(".")[1]);
+                    setFileName(file.name);
+                    setFileContent(reader.result);
+                    setFileExtension(file.name.split(".")[1]);
+                }
             }
+          
         }catch(error){
             alert(error);
 
@@ -33,9 +62,7 @@ function Navbar(props){
 
     async function handleChargeFile(e){
         e.preventDefault();
-        console.log(predict)
         setFileExtension(fileName.split(".")[1]);
-        
         var query = await Content(fileContent);
         var result = await query.json();
         
@@ -62,7 +89,7 @@ function Navbar(props){
 
         }else{
             alert('Error de Consulta')
-        }
+        } 
     }
 
     function handlePrection(e){
