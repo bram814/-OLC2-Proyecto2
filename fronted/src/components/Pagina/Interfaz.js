@@ -15,6 +15,7 @@ import {
     Reporte10,
     Reporte11,
     Reporte12,
+    Reporte13,
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -44,6 +45,7 @@ function Interfaz(props){
     const [label9, setLabel9] = useState('');
     const [label10, setLabel10] = useState('');
     const [label11, setLabel11] = useState('');
+    const [label12, setLabel12] = useState('');
 
 
     // Parametrizar
@@ -727,6 +729,56 @@ function Interfaz(props){
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
 
+        }else if(prediction == 13){
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+
+                        var query = await Reporte13(label1, label2, label3, fileContent, fileExtension, label6);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            
+                            setPolyneal(result.poly);
+                            setRmse(result.title);
+                            setLabels(result.labels);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+
+                        var query = await Reporte13(label1, label2, label3, fileContent, fileExtension, label6);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setPolyneal(result.poly);
+                            setDispers(result.poly);
+                            setRmse(result.title);
+                            setLabels(result.labels);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
         }
     }
 
@@ -759,6 +811,7 @@ function Interfaz(props){
     function handleInputChange9(e){ setLabel9(e.target.value); }
     function handleInputChange10(e){ setLabel10(e.target.value); }
     function handleInputChange11(e){ setLabel11(e.target.value); }
+    function handleInputChange12(e){ setLabel12(e.target.value); }
 
     return(
         <div>
@@ -808,6 +861,19 @@ function Interfaz(props){
                     <div>
                         <select className="form-option-1" value={label9} onChange={handleInputChange9}>
                             <option className="form-option">Encabezado del Filtro Dep.</option>
+                            {
+                                
+                                header.map(i=>{
+                                    return(
+                                        <option className="form-option" value={i.value} key={i.key}>{i.value}</option>
+                                    )
+                                })
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <select className="form-option-1" value={label12} onChange={handleInputChange12}>
+                            <option className="form-option">Encabezado de Promedio</option>
                             {
                                 
                                 header.map(i=>{
