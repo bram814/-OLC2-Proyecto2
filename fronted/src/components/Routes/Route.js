@@ -416,3 +416,27 @@ export async function Reporte17(label1, label2, label3, content, extension, grad
     })
 
 }
+
+export async function Reporte25(label1, label2, label3, content, extension, grado, filter, time, predict, isPredict){
+
+    return fetch(ROUTE_LOCAL + 'reporte25', {
+        method: 'POST',
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            label1: label1,
+            label2: label2,
+            label3: label3,
+            content: content,
+            extension: extension,
+            degree: grado,
+            filter: filter,
+            isTime: time,
+            predict: predict,
+            isPredict: isPredict
+        }),
+    })
+
+}

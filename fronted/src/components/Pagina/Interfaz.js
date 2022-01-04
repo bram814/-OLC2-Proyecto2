@@ -19,7 +19,8 @@ import {
     Reporte14,
     Reporte15,
     Reporte16,
-    Reporte17
+    Reporte17,
+    Reporte25
 } from "../Routes/Route";
 import BarChart from "../Chart/BarChart";
 import PolynealChart from "../Chart/PolynealChart";
@@ -975,6 +976,72 @@ function Interfaz(props){
                         }
                     }else {
                         alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
+        }else if(prediction == 25){ // Predicción de Infectados en un País.
+            console.log(prediction)
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte25(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte25(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        var query = await Reporte25(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label7, label8);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers);
+                            setPolyneal(result.poly);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label);
+                            setPredict(result.r2);
+                        }else {
+                            alert('Error')
+                        }
                     }
                     
                 }else{
