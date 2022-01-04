@@ -115,16 +115,17 @@ def Report7(body):
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
     title = 'Tendencia del número de infectados por día del País {}  \n Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
-   
+    title += '\n| Y =' + str(linear_regressor.coef_[1][1]) + 'X+ (' + str(linear_regressor.intercept_[1])+ ')'
     #___________________________________________________________________________________________
     # Step 5: prediction
     
     if(isPredict == '1'):
         d = pd.to_datetime(predict, dayfirst = True)
         predict = d.toordinal()
-    
 
-    new_predict = linear_regressor.predict(polyneal_feature.fit_transform([[predict]]))[0][1]
+        new_predict = linear_regressor.predict(polyneal_feature.fit_transform([[predict]]))[0][1]
+    else:
+        new_predict = ''
 
    
     return poly, dispers, title, new_predict, labels

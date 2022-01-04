@@ -1,4 +1,3 @@
-from numpy.lib.shape_base import tile
 import sklearn
 
 from sklearn.linear_model import LinearRegression
@@ -13,11 +12,15 @@ import pandas as pd
 import numpy as np
 
 
-def Report6(body):
+def Report10(body):
 
     poly = []
     dispers = []
     labels = []
+
+    poly_new = []
+    dispers_new = []
+    labels_new = []
     #___________________________________________________________________________________________
     # Step 1: trainign data.
     
@@ -27,6 +30,7 @@ def Report6(body):
     isTime = body['isTime'] # label4  -> encabezado Tiempo
     filter = body['filter'] # label5  -> encabezado de Filtro
     content = body['content'] # content -> contenido
+    compararPais = body['compareCountry'] # comparativo
     
     filtro = False
     if(label1 != ''):
@@ -43,9 +47,16 @@ def Report6(body):
         X = np.asarray(df.loc[df[filter]==label1, [label2]])
         Y = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
 
+
+        X_NEW = np.asarray(df.loc[df[filter]==compararPais, [label2]])
+        Y_NEW = np.asarray( df.loc[df[filter]==label1, [label3]]).reshape(-1,1)
+
     else:
         X = np.asarray(df[label2])
         Y = np.asarray(df[label3]).reshape(-1,1)
+
+        X_NEW = np.asarray(df[label2])
+        Y_NEW = np.asarray(df[label3]).reshape(-1,1)
 
     i = 0
     if(isTime=='0' or isTime==''):
@@ -54,7 +65,18 @@ def Report6(body):
             X[i] = f'{(i+1)}'
             i += 1
 
+
+    i = 0
+    if(isTime=='0' or isTime==''):
+        while(i<len(X_NEW)):
+
+            X_NEW[i] = f'{(i+1)}'
+            i += 1
+
+
     X_TEMP = X
+    X_TEMP_NEW = X_NEW
+    
     
     i = 0
     while(i<len(X_TEMP)):
@@ -73,11 +95,34 @@ def Report6(body):
                 "y":str(Y[i][0])
             })
         i += 1
+
+    
+    i = 0
+    while(i<len(X_TEMP_NEW)):
+
+        if(filter):
+            labels_new.append(str(X_TEMP_NEW[i][0]))
+            poly_new.append({
+                "x":str(X_TEMP_NEW[i][0]),
+                "y":str(Y_NEW[i][0])
+            })
+            
+        else:
+            labels_new.append(str(X_TEMP_NEW[i]))
+            poly_new.append({
+                "x":str(X_TEMP_NEW[i]),
+                "y":str(Y_NEW[i][0])
+            })
+        i += 1
+
+
     if(isTime == '1'):
         Y = Y.reshape(-1,1)
+        Y_NEW = Y_NEW.reshape(-1,1)
 
     X = X.reshape(-1,1)
-    # plt.scatter(X,Y)
+    X_NEW = X_NEW.reshape(-1,1)
+    
     #___________________________________________________________________________________________
     # Step 2: data preparation.
         
@@ -86,12 +131,22 @@ def Report6(body):
     X = polyneal_feature.fit_transform(X)
     Y = polyneal_feature.fit_transform(Y)
 
+    polyneal_feature_new = PolynomialFeatures(degree=nb_degree)
+    X_NEW = polyneal_feature_new.fit_transform(X)
+    Y_NEW = polyneal_feature_new.fit_transform(Y)
+
     #___________________________________________________________________________________________
     # Step 3: define and train a model
         
     linear_regressor = LinearRegression()  # create object for the class
     linear_regressor.fit(X, Y)  # perform linear regression
     Y_pred = linear_regressor.predict(X)  # make predictions
+    
+        
+    linear_regressor_new = LinearRegression()  # create object for the class
+    linear_regressor_new.fit(X_NEW, Y_NEW)  # perform linear regression
+    Y_pred_new = linear_regressor_new.predict(X_NEW)  # make predictions
+    
 
     i = 0
     while(i<len(X_TEMP)):
@@ -107,6 +162,20 @@ def Report6(body):
             })
         i += 1
     
+    i = 0
+    while(i<len(X_TEMP_NEW)):
+        if(filtro):
+           dispers_new.append({
+                "x":str(X_TEMP_NEW[i][0]),
+                "y":str(Y_pred_new[i][1])
+            }) 
+        else:
+            dispers_new.append({
+                "x":str(X_TEMP_NEW[i]),
+                "y":str(Y_pred_new[i][1])
+            })
+        i += 1
+
     #_________________________  __________________________________________________________________
     # Step 4: calculate bias and variance
     
@@ -114,10 +183,47 @@ def Report6(body):
     r2 = r2_score(Y,Y_pred)
     # print('RSEME: ', rmse)
     # print('R2: ', r2)
+    
+    rmse_new = np.sqrt(mean_squared_error(Y_NEW, Y_pred_new, squared=False))
+    r2_new = r2_score(Y_NEW,Y_pred_new)
+    # print('RSEME: ', rmse)
+    # print('R2: ', r2)
+    
 
-    title = 'Análisis del número de muertes por coronavirus en {} \n | Degree = {}; RMSE = {}; R2 = {}'.format(label1, nb_degree, round(rmse,2), round(r2,2))
-    title += '\n| Y =' + str(linear_regressor.coef_[1][1]) + 'X+ (' + str(linear_regressor.intercept_[1])+ ')'
+    title = 'Ánalisis Comparativo entre el País {}: \n Degree = {}; RMSE = {}; R2 = {}, {}: \n Degree = {}; RMSE = {}; R2 = {}  '.format(label1, nb_degree, round(rmse,2), round(r2,2), compararPais, nb_degree, round(rmse_new,2), round(r2_new,2))
 
-    return poly, dispers, title, r2, labels
+    NEW_POLY = []
+    NEW_POLY.append(poly)
+    NEW_POLY.append(poly_new)
+
+    NEW_DISPERS = []
+    NEW_DISPERS.append(dispers)
+    NEW_DISPERS.append(dispers_new)
+
+    NEW_LABELS = []
+    NEW_LABELS.append(labels)
+    NEW_LABELS.append(labels_new)
+    
+    i = 0 
+    print("----------------")
+    while(i<len(poly_new)):
+        poly.append(poly_new[i])
+        i+=1
+
+    print("----------------")
+
+    
+    i = 0 
+    while(i<len(dispers_new)):
+        dispers.append(dispers_new[i])
+        i+=1
+        
+    i = 0 
+    while(i<len(labels_new)):
+        labels.append(labels_new[i])
+        i+=1
+
+
+    return NEW_POLY, NEW_DISPERS, title, r2, NEW_LABELS
 
 

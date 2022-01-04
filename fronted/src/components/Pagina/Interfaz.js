@@ -5,13 +5,16 @@ import {
     Content, 
     Reporte1, 
     Reporte2, 
+    Reporte3,
     Reporte4,
     Reporte5,
     Reporte6,
     Reporte7,
-    Reporte9
+    Reporte9,
+    Reporte10
 } from "../Routes/Route";
 import PolynealChart from "../Chart/PolynealChart";
+import PolynealChartCompare from "../Chart/PolynealChartCompare";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import './Interfaz.css'
@@ -52,10 +55,27 @@ function Interfaz(props){
     const [predict, setPredict] = useState('')
 
 
+    const [polyneal2, setPolyneal2] = useState(null);
+    const [dispers2, setDispers2] = useState(null);
+    const [rmse2, setRmse2] = useState(0);
+    const [r22, setR22] = useState(0);
+    const [labels2, setLabels2] = useState(null);
+
     async function handlePrediction(e){
         
         // e.preventDefault();
-        
+        setDispers(null);
+        setPolyneal(null);
+        setR2(0);
+        setRmse(0);
+        setLabels(null);
+
+        setDispers2(null);
+        setPolyneal2(null);
+        setR22(0);
+        setRmse2(0);
+        setLabels2(null);
+
         if(prediction == 1){       // Tendencia de la infección por Covid-19 en un País.
             setPredict('');
             if(label2 != '' || label3 != ''){
@@ -164,7 +184,7 @@ function Interfaz(props){
                
                 if(label4>=1){
                     if(label1 != '' && label6 != ''){
-                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        var query = await Reporte3(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
                         
                         var result = await query.json();
 
@@ -180,7 +200,7 @@ function Interfaz(props){
                             alert('Error')
                         }
                     }else if(label1 == '' && label6 ==''){
-                        var query = await Reporte1(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
+                        var query = await Reporte3(label1, label2, label3, fileContent, fileExtension, label4, label6, label5);
                         
                         var result = await query.json();
 
@@ -193,9 +213,11 @@ function Interfaz(props){
                             setLabels(result.label);
 
                         }else {
+                            console.log(label1,'-',label6)
                             alert('Error')
                         }
                     }else {
+
                         alert('Debe de Ingresar el Filtro')
                     }
                     
@@ -465,7 +487,70 @@ function Interfaz(props){
             }else{
                 alert('Debe seleccionar un Encabezado para poder Parametrizar.')
             }
-        }else if(prediction == 10){
+        }else if(prediction == 10){ // compare
+            setPredict('');
+            if(label2 != '' || label3 != ''){
+               
+                if(label4>=1){
+                    if(label1 != '' && label6 != ''){
+                        var query = await Reporte10(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label11);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers[0]);
+                            setPolyneal(result.poly[0]);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label[0]);
+
+                            setDispers2(result.dispers[1]);
+                            setPolyneal2(result.poly[1]);
+                            setR22(result.r2);
+                            setRmse2(result.rmse);
+                            setLabels2(result.label[1]);
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else if(label1 == '' && label6 ==''){
+                        var query = await Reporte10(label1, label2, label3, fileContent, fileExtension, label4, label6, label5, label11);
+                        
+                        var result = await query.json();
+
+                        if(query.status == 200){
+
+                            setDispers(result.dispers[0]);
+                            setPolyneal(result.poly[0]);
+                            setR2(result.r2);
+                            setRmse(result.rmse);
+                            setLabels(result.label[0]);
+
+                            setDispers2(result.dispers[1]);
+                            setPolyneal2(result.poly[1]);
+                            setR22(result.r2);
+                            setRmse2(result.rmse);
+                            setLabels2(result.label[1]);
+
+
+
+                        }else {
+                            alert('Error')
+                        }
+                    }else {
+                        alert('Debe de Ingresar el Filtro')
+                    }
+                    
+                }else{
+                    alert('Grado debe de ser igual o mayor a 1.')
+                }
+                
+
+                
+            }else{
+                alert('Debe seleccionar un Encabezado para poder Parametrizar.')
+            }
 
         }
     }
@@ -524,7 +609,7 @@ function Interfaz(props){
                         <input className="etiqueta1" type="text" placeholder="Filtro País" value={label1} onChange={handleInputChange1} /> 
                     </div>
                     <div>
-                        <input className="etiqueta1" type="text" placeholder="Filtro País Comparativo" value={label1} onChange={handleInputChange1} /> 
+                        <input className="etiqueta1" type="text" placeholder="Filtro País Comparativo" value={label11} onChange={handleInputChange11} /> 
                     </div>
                     <div>
                         <input className="etiqueta1" type="text" placeholder="Filtro Departamento" value={label10} onChange={handleInputChange10} /> 
@@ -628,6 +713,20 @@ function Interfaz(props){
                             dispers = {dispers} 
                             labels = {labels}                
                         />
+
+                       
+                    </div>
+                    <div>
+                        {
+                            polyneal2!=null &&
+                            <PolynealChartCompare 
+
+                            title = {rmse2} 
+                            poly = {polyneal2} 
+                            dispers = {dispers2} 
+                            labels = {labels2}   
+                            />
+                        }
 
                     </div>
                 </div>
